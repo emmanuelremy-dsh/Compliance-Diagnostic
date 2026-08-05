@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay Transparency & HR/Payroll Compliance — GC Diagnostic</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap');
+
+:root{
+  --dsh-blue:#00a1ff;
+  --charcoal:#1f2937;
+  --gray:#6b7280;
+  --navy:#0f1729;
+  --surface:#f5f7fa;
+  --border:#e5e7eb;
+  --confident:#10b981;
+  --partial:#f59e0b;
+  --unknown:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Lexend',-apple-system,BlinkMacSystemFont,sans-serif;
+  color:var(--charcoal);
+  background:var(--surface);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px;margin:0 auto;padding:32px 20px 64px;}
+
+/* Header */
+.logo{font-size:22px;font-weight:700;letter-spacing:-0.5px;color:var(--charcoal);}
+.logo span{color:var(--dsh-blue);}
+header{margin-bottom:8px;}
+h1{font-size:30px;font-weight:700;letter-spacing:-0.5px;margin:20px 0 8px;line-height:1.2;}
+.sub{color:var(--gray);font-size:16px;max-width:640px;}
+
+.intro{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:20px 24px;margin:24px 0;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.intro p{font-size:15px;margin-bottom:10px;}
+.intro p:last-child{margin-bottom:0;}
+.intro strong{font-weight:600;}
+
+/* Anchor */
+.anchor{
+  background:var(--navy);color:#fff;border-radius:12px;padding:24px 28px;margin:24px 0 8px;
+}
+.anchor .qlabel{color:rgba(255,255,255,.6);font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;}
+.anchor h2{font-size:20px;font-weight:600;margin:6px 0 16px;line-height:1.35;}
+.anchor .opts{display:flex;gap:10px;flex-wrap:wrap;}
+.anchor .opt{flex:1;min-width:150px;}
+
+/* Section */
+.section-title{
+  font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--dsh-blue);margin:36px 0 4px;
+}
+.section-num{color:var(--gray);}
+
+/* Question card */
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:22px 24px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.q{font-size:16px;font-weight:600;line-height:1.4;margin-bottom:6px;}
+.q .n{color:var(--dsh-blue);font-weight:700;margin-right:8px;}
+.why{color:var(--gray);font-size:14px;margin-bottom:16px;}
+.opts{display:flex;gap:10px;flex-wrap:wrap;}
+.opt{flex:1;min-width:140px;}
+.opt input{position:absolute;opacity:0;}
+.opt label{
+  display:block;text-align:center;padding:10px 8px;border:1.5px solid var(--border);
+  border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .12s;
+  background:#fff;color:var(--charcoal);
+}
+.opt label:hover{border-color:var(--dsh-blue);}
+.opt input:checked + label{color:#fff;border-color:transparent;}
+.opt.confident input:checked + label{background:var(--confident);}
+.opt.partial   input:checked + label{background:var(--partial);}
+.opt.unknown   input:checked + label{background:var(--unknown);}
+/* anchor variant on dark */
+.anchor .opt label{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.25);color:#fff;}
+.anchor .opt label:hover{border-color:var(--dsh-blue);}
+
+textarea{
+  width:100%;margin-top:14px;border:1px solid var(--border);border-radius:8px;
+  padding:10px 12px;font-family:inherit;font-size:14px;color:var(--charcoal);
+  resize:vertical;min-height:44px;
+}
+textarea:focus{outline:none;border-color:var(--dsh-blue);}
+textarea::placeholder{color:#9aa2af;}
+
+/* Actions */
+.actions{display:flex;gap:12px;margin:32px 0;flex-wrap:wrap;}
+button{
+  font-family:inherit;font-size:15px;font-weight:500;border-radius:8px;padding:12px 24px;
+  cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--charcoal);
+}
+button.primary{background:var(--dsh-blue);color:#fff;border-color:transparent;}
+button.primary:hover{background:#0090e8;}
+button:hover{border-color:var(--dsh-blue);}
+
+/* Readout */
+.readout{
+  background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px 28px;
+  margin-top:8px;box-shadow:0 4px 20px rgba(0,0,0,.08);display:none;
+}
+.readout h2{font-size:20px;font-weight:600;margin-bottom:14px;}
+.tally{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.pill{border-radius:8px;padding:12px 16px;flex:1;min-width:120px;text-align:center;}
+.pill .num{font-size:28px;font-weight:700;line-height:1;}
+.pill .lbl{font-size:12px;font-weight:500;margin-top:4px;}
+.pill.c{background:rgba(16,185,129,.1);}   .pill.c .num,.pill.c .lbl{color:var(--confident);}
+.pill.p{background:rgba(245,158,11,.1);}   .pill.p .num,.pill.p .lbl{color:var(--partial);}
+.pill.u{background:rgba(239,68,68,.1);}    .pill.u .num,.pill.u .lbl{color:var(--unknown);}
+.readout h3{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);margin:20px 0 10px;}
+.priority{border-left:3px solid var(--unknown);padding:4px 0 4px 14px;margin-bottom:12px;}
+.priority.p{border-color:var(--partial);}
+.priority .pq{font-size:15px;font-weight:500;}
+.priority .pn{font-size:13px;color:var(--gray);margin-top:2px;}
+.rootcause{background:var(--surface);border-radius:8px;padding:16px 18px;margin-top:18px;font-size:14px;}
+.rootcause strong{font-weight:600;}
+
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);color:var(--gray);font-size:13px;}
+footer .logo{font-size:15px;margin-bottom:6px;}
+
+/* Print */
+@media print{
+  body{background:#fff;}
+  .actions,.opt label:hover{display:none;}
+  .actions{display:none;}
+  .card,.intro,.readout,.anchor{box-shadow:none;break-inside:avoid;}
+  .readout{display:block !important;}
+  .opt label{border-width:1px;}
+  a[href]:after{content:"";}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">datascale<span>hr</span></div>
+    <h1>Where do we stand on pay transparency and HR/payroll compliance?</h1>
+    <p class="sub">A short diagnostic for the General Counsel to work through before meeting the CHRO. It turns "are we compliant?" into a small set of fact-based questions you can put on the table.</p>
+  </header>
+
+  <div class="intro">
+    <p><strong>How to use this.</strong> Answer each question honestly for your own organization. The point is not to score well. It is to find, quickly, where the facts are solid and where they rest on assumptions.</p>
+    <p>Rate each one <strong>Confident</strong> (we can prove it today), <strong>Partial</strong> (we have some of it, with gaps), or <strong>Don't know</strong> (we would have to go and find out). Use the notes to name the system, the owner, or the doubt. When you generate the readout, every "Partial" and "Don't know" becomes an agenda item for the CHRO conversation.</p>
+  </div>
+
+  <!-- Anchor -->
+  <div class="anchor">
+    <div class="qlabel">The anchor question</div>
+    <h2>Overall, how confident are we that we can prove our HR and payroll compliance position on demand — to a regulator, an auditor, or a works council?</h2>
+    <div class="opts" data-q="anchor">
+      <div class="opt confident"><input type="radio" name="anchor" id="a-c" value="confident"><label for="a-c">Confident</label></div>
+      <div class="opt partial"><input type="radio" name="anchor" id="a-p" value="partial"><label for="a-p">Partial</label></div>
+      <div class="opt unknown"><input type="radio" name="anchor" id="a-u" value="unknown"><label for="a-u">Not confident</label></div>
+    </div>
+  </div>
+
+  <div id="questions"></div>
+
+  <div class="actions">
+    <button class="primary" onclick="generate()">Generate readout for the CHRO meeting</button>
+    <button onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <div class="readout" id="readout"></div>
+
+  <footer>
+    <div class="logo">datascale<span>hr</span></div>
+    <p>datascalehr is the context layer for global HCM data — the normalized, learning data surface that connects every system holding your workforce data, inside your walls, owned by you. When compliance answers are hard to produce, the root cause is usually that pay data lives across systems that were never connected.</p>
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  { section:"1 · Know your systems and data — the foundation",
+    items:[
+      { q:"Do we have a current, country-by-country inventory of every system that holds pay-transparency-relevant data — core HR, other HR tech, payroll engines, comp tools, spreadsheets, and systems inherited through acquisitions?",
+        why:"Everything downstream depends on knowing where the data lives. Most gaps trace back to a system no one thought to list.",
+        note:"Note the systems you know of, and the ones you suspect but can't confirm." },
+      { q:"Can we trace a single reported figure — say, one employee's total remuneration — back to its source system, and reconcile it where the same person exists in more than one system?",
+        why:"A number you can't trace is a number you can't defend when it is challenged.",
+        note:"" },
+    ]},
+  { section:"2 · EU Pay Transparency Directive readiness",
+    items:[
+      { q:"Do we know, for each member state we operate in, which reporting obligations apply to us and by when — and have we confirmed how each state has transposed the Directive into its national law?",
+        why:"The Directive sets the floor (first reports from employers with 250+ staff are due by June 2027 on 2026 data). National transposition sets the specifics, and it varies.",
+        note:"" },
+      { q:"Can we produce the required gender pay gap metrics — overall mean and median gap, gap by category of worker, and the share of men and women receiving variable pay — reliably and repeatably, rather than as a manual one-off?",
+        why:"A number you can only produce by hand once cannot be reproduced, audited, or trusted year over year.",
+        note:"" },
+      { q:"Do we have an agreed, defensible method for grouping employees into categories of workers doing equal work or work of equal value?",
+        why:"The entire pay gap calculation rests on this grouping. If the job architecture is contested, so is every figure built on it.",
+        note:"" },
+      { q:"If any category showed an unexplained gap of 5% or more, do we have the data to either justify it on objective, gender-neutral grounds or remediate it — before a joint pay assessment is triggered?",
+        why:"An unjustified 5% gap that isn't closed within six months obliges you to run a joint pay assessment with worker representatives.",
+        note:"" },
+      { q:"Can we answer an individual employee's request for their own pay, plus the average pay levels for their category broken down by sex, within the timeframe the law requires?",
+        why:"This is an individual right. The request can arrive tomorrow, and the clock starts when it does.",
+        note:"" },
+    ]},
+  { section:"3 · The wider compliance reporting cadence",
+    items:[
+      { q:"Do we have a single register of every recurring HR and payroll compliance report we owe — monthly, quarterly, semi-annual, and annual — by jurisdiction, each with a named owner, a source system, and a deadline?",
+        why:"Pay transparency is one obligation among many. If the full set of recurring reports isn't written down in one place, something is being missed.",
+        note:"" },
+    ]},
+];
+
+let idx = 0;
+const container = document.getElementById('questions');
+questions.forEach(sec=>{
+  const st = document.createElement('div');
+  st.className='section-title';
+  const parts = sec.section.split(' · ');
+  st.innerHTML = '<span class="section-num">'+parts[0]+' · </span>'+parts[1];
+  container.appendChild(st);
+  sec.items.forEach(it=>{
+    idx++;
+    const card = document.createElement('div');
+    card.className='card';
+    card.dataset.n = idx;
+    card.dataset.q = it.q;
+    card.dataset.why = it.why;
+    const name = 'q'+idx;
+    card.innerHTML = `
+      <div class="q"><span class="n">${idx}</span>${it.q}</div>
+      <div class="why">${it.why}</div>
+      <div class="opts">
+        <div class="opt confident"><input type="radio" name="${name}" id="${name}-c" value="confident"><label for="${name}-c">Confident</label></div>
+        <div class="opt partial"><input type="radio" name="${name}" id="${name}-p" value="partial"><label for="${name}-p">Partial</label></div>
+        <div class="opt unknown"><input type="radio" name="${name}" id="${name}-u" value="unknown"><label for="${name}-u">Don't know</label></div>
+      </div>
+      <textarea placeholder="${it.note || 'Notes: name the system, the owner, or the doubt.'}"></textarea>`;
+    container.appendChild(card);
+  });
+});
+
+function generate(){
+  const cards = [...document.querySelectorAll('.card')];
+  let c=0,p=0,u=0;
+  const priorities=[];
+  cards.forEach(card=>{
+    const sel = card.querySelector('input:checked');
+    const v = sel ? sel.value : null;
+    if(v==='confident') c++;
+    else if(v==='partial'){ p++; priorities.push({card,level:'p'}); }
+    else if(v==='unknown'){ u++; priorities.push({card,level:'u'}); }
+    else { u++; priorities.push({card,level:'u'}); }
+  });
+  const anchorSel = document.querySelector('input[name="anchor"]:checked');
+  const anchor = anchorSel ? anchorSel.value : null;
+
+  let html = '<h2>Readout for the CHRO conversation</h2>';
+  const anchorText = {confident:'You went in confident overall.',partial:'You went in partly confident overall.',unknown:'You went in not confident overall.'}[anchor] || 'Overall confidence was left unrated.';
+  html += `<p style="color:var(--gray);font-size:14px;margin-bottom:18px;">${anchorText} The tally below shows how that holds up question by question.</p>`;
+
+  html += `<div class="tally">
+    <div class="pill c"><div class="num">${c}</div><div class="lbl">Confident</div></div>
+    <div class="pill p"><div class="num">${p}</div><div class="lbl">Partial</div></div>
+    <div class="pill u"><div class="num">${u}</div><div class="lbl">Don't know / unrated</div></div>
+  </div>`;
+
+  if(priorities.length){
+    html += '<h3>Raise these with the CHRO first</h3>';
+    priorities.sort((a,b)=> (a.level==='u'?0:1)-(b.level==='u'?0:1));
+    priorities.forEach(pr=>{
+      html += `<div class="priority ${pr.level}">
+        <div class="pq"><span style="color:var(--dsh-blue);font-weight:700;">${pr.card.dataset.n}.</span> ${pr.card.dataset.q}</div>
+        <div class="pn">${pr.card.dataset.why}</div>
+      </div>`;
+    });
+  } else {
+    html += '<h3>Every question came back confident</h3><p style="font-size:14px;color:var(--gray);">If that is genuinely true and provable, you are in a strong position. It is worth having the CHRO confirm each item points to a real system and a named owner, not a shared assumption.</p>';
+  }
+
+  const q1 = cards[0].querySelector('input:checked');
+  const q2 = cards[1].querySelector('input:checked');
+  const weakFoundation = [q1,q2].some(s=> !s || s.value!=='confident');
+  if(weakFoundation){
+    html += `<div class="rootcause"><strong>A pattern worth naming.</strong> When the first two questions — the system inventory and the ability to trace a figure to its source — are anything short of confident, the reporting questions below them tend to inherit the same doubt. The usual root cause is that pay data lives across many systems that were never connected to each other. That is the problem the datascalehr context layer is built to remove.</div>`;
+  }
+
+  const r = document.getElementById('readout');
+  r.innerHTML = html;
+  r.style.display='block';
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
